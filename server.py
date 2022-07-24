@@ -1,11 +1,12 @@
 from flask import Flask, jsonify, render_template, request
 from flask_cors import CORS
 import os
+import numpy as np
+import json
 from min_example import interface, load_model
 app = Flask(__name__, static_folder="../client/dist", template_folder="../client")
 port = int(os.getenv('PORT', 8080))
 CORS(app)
-config, model, smlstok, tdatstok, comstok = load_model()
 
 @app.route("/")
 def index():
@@ -21,6 +22,21 @@ def handshake():
 
 @app.route('/submit_payload', methods=['POST'])
 def submit_payload():
+    class NumpyEncoder(json.JSONEncoder):
+        """ Special json encoder for numpy types """
+        def default(self, obj):
+            if isinstance(obj, (np.int_, np.intc, np.intp, np.int8,
+                                np.int16, np.int32, np.int64, np.uint8,
+                                np.uint16, np.uint32, np.uint64)):
+                return int(obj)
+            elif isinstance(obj, (np.float_, np.float16, np.float32,
+                                np.float64)):
+                return float(obj)
+            elif isinstance(obj, (np.ndarray,)):
+                return obj.tolist()
+            return json.JSONEncoder.default(self, obj)
+    config, model, smlstok, tdatstok, comstok = load_model()
+
     # get the parameters from the POST request(these would be required as parameters for your main()/Interface function)
     payload_json = request.get_json(force=True)
 	# print(payload_json)
@@ -30,7 +46,7 @@ def submit_payload():
     output_explanation, output_dict, dict1 = interface(input_code, config, model, smlstok, tdatstok, comstok)
     # make sure that result is in dictionary format
     result = { "summary": output_explanation, "intermediate_output": output_dict, "input_dict":dict1 }
-    return jsonify(result)
+    return json.dumps(result, cls=NumpyEncoder)
 
 if __name__ == "__main__":
 
