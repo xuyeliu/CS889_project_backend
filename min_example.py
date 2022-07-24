@@ -76,7 +76,7 @@ def gen_pred(model, newxml, data, comstok, smltok, comlen, strat='greedy'):
     dict1["topK"] = {}
     dict1['topK_confidence_score'] = {}
     dict1["topK_word"] = {}
-    outfn = "ICPC2020_GNN/modelout/predictions/layer_output.txt"
+    outfn = "CS889_project_backend/modelout/predictions/layer_output.txt"
     outf = open(outfn, 'w')
     output_dict = collections.defaultdict(dict)
     for i in range(1, comlen):
@@ -109,10 +109,10 @@ def gen_pred(model, newxml, data, comstok, smltok, comlen, strat='greedy'):
             dict1["topK_word"][i] = seq2sent(dict1["topK"][i], comstok)
             dict1['newxml'] = newxml
             print("com_i", coms[c][i])
-    with open('ICPC2020_GNN/modelout/predictions/layer_output.json', 'w') as fp:
+    with open('CS889_project_backend/modelout/predictions/layer_output.json', 'w') as fp:
         # pickle.dump(output_dict, fp)
         fp.write(json.dumps(output_dict, cls=NDArrayEncoder))
-    with open('ICPC2020_GNN/modelout/predictions/input.json', 'w') as fp:
+    with open('CS889_project_backend/modelout/predictions/input.json', 'w') as fp:
         # pickle.dump(dict1, fp)
         fp.write(json.dumps(dict1, cls=NDArrayEncoder))
     outf.close() 
@@ -280,10 +280,10 @@ def w2i(word):
     return i
 
 def load_model():
-    modelfile = "ICPC2020_GNN/final_data/codegnngru.h5"
-    tdatstok = pickle.load(open('ICPC2020_GNN/final_data/tdats.tok', 'rb'), encoding='UTF-8')
-    comstok = pickle.load(open('ICPC2020_GNN/final_data/coms.tok', 'rb'), encoding='UTF-8')
-    smlstok = pickle.load(open('ICPC2020_GNN/final_data/smls.tok', 'rb'), encoding='UTF-8')
+    modelfile = "CS889_project_backend/final_data/codegnngru.h5"
+    tdatstok = pickle.load(open('CS889_project_backend/final_data/tdats.tok', 'rb'), encoding='UTF-8')
+    comstok = pickle.load(open('CS889_project_backend/final_data/coms.tok', 'rb'), encoding='UTF-8')
+    smlstok = pickle.load(open('CS889_project_backend/final_data/smls.tok', 'rb'), encoding='UTF-8')
    
     # seqdata = pickle.load(open('ICPC2020_GNN/final_data/dataset.pkl', 'rb'))
     comlen = 13
@@ -319,7 +319,7 @@ def load_model():
     
 def interface(dats, config, model, smlstok, tdatstok, comstok):
     xml = []
-    with open('ICPC2020_GNN/min_example.java', 'w') as file:
+    with open('CS889_project_backend/min_example.java', 'w') as file:
         file.write(dats)
     ## generate code sequence data
     newdats = dict()
@@ -331,12 +331,12 @@ def interface(dats, config, model, smlstok, tdatstok, comstok):
 
     textdat = ' '.join(tmp)
     textdat = textdat.lower()
-    os.system("srcml ICPC2020_GNN/min_example.java -o ICPC2020_GNN/min_example.xml")
+    os.system("srcml CS889_project_backend/min_example.java -o ICPC2020_GNN/min_example.xml")
     lens = list()
     blanks = 0
     unit = ''
     try:
-      with open('ICPC2020_GNN/min_example.xml', 'rb') as file:
+      with open('CS889_project_backend/min_example.xml', 'rb') as file:
           unit = file.read()
     except:
       print("error reading")
@@ -418,7 +418,7 @@ if __name__ == "__main__":
       res, output_dict, dict1 = interface(input_data["code"][i], config, model, smlstok, tdatstok, comstok)
       final_dict[i]["layer_output"] = output_dict
       final_dict[i]["input"] = dict1
-      with open('ICPC2020_GNN/modelout/predictions/final_dict.json', 'w') as fp:
+      with open('CS889_project_backend/modelout/predictions/final_dict.json', 'w') as fp:
         # pickle.dump(dict1, fp)
         fp.write(json.dumps(final_dict, cls=NDArrayEncoder))
       # res = interface("\tpublic void setMaximumSolutionLength(short maximumSolutionLength) {\n\t\tmaximumPushesCurrentIteration = maximumSolutionLength;\n\t}\n", config, model, smlstok, tdatstok, comstok)
