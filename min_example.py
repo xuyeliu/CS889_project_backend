@@ -411,7 +411,7 @@ def interface(dats, config, model, smlstok, tdatstok, comstok):
 if __name__ == "__main__":
     final_dict = collections.defaultdict(dict)
     config, model, smlstok, tdatstok, comstok = load_model()
-    with open('ICPC2020_GNN/xml.json','r') as fr: #默认为 encoding='utf-8‘ 注意是否需要改为 encoding='gbk'等
+    with open('CS889_project_backend/xml.json','r') as fr: #默认为 encoding='utf-8‘ 注意是否需要改为 encoding='gbk'等
 	    input_data = json.load(fr)
     for i in range(len(input_data["code"])):
     #   res, output_dict, dict1 = interface(input_data["code"][i], input_data["xml"][i], config, model, smlstok, tdatstok, comstok)
