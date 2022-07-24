@@ -317,7 +317,7 @@ def load_model():
 
     return config, model, smlstok, tdatstok, comstok
     
-def interface(dats, xml_from_code, config, model, smlstok, tdatstok, comstok):
+def interface(dats, config, model, smlstok, tdatstok, comstok):
     xml = []
     with open('ICPC2020_GNN/min_example.java', 'w') as file:
         file.write(dats)
@@ -341,7 +341,7 @@ def interface(dats, xml_from_code, config, model, smlstok, tdatstok, comstok):
     except:
       print("error reading")
       pass
-    unit = xml_from_code
+    # unit = xml_from_code
     print(unit)
     # unit = unit.decode('utf-8', 'ignore')
     # unit = pickle.load(open('min_example.xml', 'rb'))
@@ -414,7 +414,8 @@ if __name__ == "__main__":
     with open('ICPC2020_GNN/xml.json','r') as fr: #默认为 encoding='utf-8‘ 注意是否需要改为 encoding='gbk'等
 	    input_data = json.load(fr)
     for i in range(len(input_data["code"])):
-      res, output_dict, dict1 = interface(input_data["code"][i], input_data["xml"][i], config, model, smlstok, tdatstok, comstok)
+    #   res, output_dict, dict1 = interface(input_data["code"][i], input_data["xml"][i], config, model, smlstok, tdatstok, comstok)
+      res, output_dict, dict1 = interface(input_data["code"][i], config, model, smlstok, tdatstok, comstok)
       final_dict[i]["layer_output"] = output_dict
       final_dict[i]["input"] = dict1
       with open('ICPC2020_GNN/modelout/predictions/final_dict.json', 'w') as fp:
