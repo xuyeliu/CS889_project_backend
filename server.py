@@ -4,13 +4,13 @@ import os
 import numpy as np
 import json
 from min_example import interface, load_model
-app = Flask(__name__, static_folder="../client/dist", template_folder="../client")
+app = Flask(__name__, static_url_path='', static_folder="static")
 port = int(os.getenv('PORT', 8080))
 CORS(app)
 
 @app.route("/")
 def index():
-	return render_template("index.html")
+	return app.send_static_file("index.html")
 
 @app.route("/test")
 def test():
