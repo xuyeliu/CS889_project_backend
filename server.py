@@ -29,7 +29,7 @@ def submit_payload():
 	# call your main()/Interface function
     output_explanation, output_dict, dict1 = interface(input_code, config, model, smlstok, tdatstok, comstok)
     # make sure that result is in dictionary format
-    result = { "explanation": output_explanation }
+    result = { "summary": output_explanation, "intermediate_output": output_dict, "input_dict":dict1 }
     return jsonify(result)
 
 if __name__ == "__main__":
