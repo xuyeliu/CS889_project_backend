@@ -272,7 +272,7 @@ def new_xml_Generate(unit):
   print(parserAlt.get_tokens())
   return ET.tostring(parserAlt.get_document(), encoding='unicode')
 
-def w2i(word):
+def w2i(word, smlstok):
     try:
         i = smlstok.w2i[word]
     except KeyError:
@@ -354,7 +354,7 @@ def interface(dats, config, model, smlstok, tdatstok, comstok):
     lens.append(len(graph.nodes.data()))
     nodes = list(graph.nodes.data())
     print(nodes)
-    nodes = np.asarray([w2i(x[1]['text']) for x in list(graph.nodes.data())])
+    nodes = np.asarray([w2i(x[1]['text'], smlstok) for x in list(graph.nodes.data())])
     edges = nx.adjacency_matrix(graph)
     # print('blanks:', blanks)
     # print('avg:', sum(lens) / len(lens))
