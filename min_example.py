@@ -331,7 +331,7 @@ def interface(dats, config, model, smlstok, tdatstok, comstok):
 
     textdat = ' '.join(tmp)
     textdat = textdat.lower()
-    os.system("srcml CS889_project_backend/min_example.java -o ICPC2020_GNN/min_example.xml")
+    os.system("srcml CS889_project_backend/min_example.java -o CS889_project_backend/min_example.xml")
     lens = list()
     blanks = 0
     unit = ''
