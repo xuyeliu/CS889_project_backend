@@ -30,7 +30,7 @@ class CodeGNNGRU:
         node_input = Input(shape=(self.smllen,))
         edge_input = Input(shape=(self.smllen, self.smllen))
         
-        tdel = Embedding(output_dim=self.embdims, input_dim=self.tdatvocabsize, mask_zero=False, name = "Embedding_code")
+        tdel = Embedding(output_dim=self.embdims, input_dim=self.tdatvocabsize, mask_zero=False)
         tde = tdel(tdat_input)
         
         se = tdel(node_input)
@@ -44,7 +44,7 @@ class CodeGNNGRU:
 
         tattn = dot([decout, tencout], axes=[2, 2])
         tattn = Activation('softmax')(tattn)
-        tcontext = dot([tattn, tencout], axes=[2, 1], name = "Att1")
+        tcontext = dot([tattn, tencout], axes=[2, 1])
 
         astwork = se
 
@@ -57,7 +57,7 @@ class CodeGNNGRU:
         # attend decoder words to nodes in ast
         aattn = dot([decout, astwork], axes=[2, 2])
         aattn = Activation('softmax')(aattn)
-        acontext = dot([aattn, astwork], axes=[2, 1], name = "Att2")
+        acontext = dot([aattn, astwork], axes=[2, 1])
 
         context = concatenate([tcontext, decout, acontext])
 
@@ -71,4 +71,4 @@ class CodeGNNGRU:
         # attention2_layer_model=Model(inputs=[tdat_input, com_input, node_input, edge_input],outputs = model.get_layer('Dot2').output)
         # Embeddinng1_layer_model=Model(inputs=[tdat_input, com_input, node_input, edge_input],outputs = model.get_layer('Embedding_code').output)
         model.compile(loss='categorical_crossentropy', optimizer='adamax', metrics=['accuracy'])
-        return self.config, model, attention1_layer_model, attention2_layer_model, Embeddinng1_layer_model
+        return self.config, model
