@@ -336,7 +336,7 @@ def interface(dats, config, model, smlstok, tdatstok, comstok):
     blanks = 0
     unit = ''
     try:
-      with open('CS889_project_backend/min_example.xml', 'rb') as file:
+      with open('CS889_project_backend/min_example.xml', 'r') as file:
           unit = file.read()
     except:
       print("error reading")
